@@ -20,7 +20,13 @@ Route::get('/', function () {
 });
 
  Route::middleware(['auth','verified'])->group(function() {
-     Route::get('/',[ProjectController::class, 'index'])->name('admin.projects.index');
+    Route::get('/',[ProjectController::class, 'index'])->name('projects.index');
+    Route::get('/admin/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::get('/admin/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+    Route::post('/admin/projects',[ProjectController::class, 'store'])->name('projects.store');
+    Route::get('/admin/projects/{project}/edit',[ProjectController::class,'edit'])->name('projects.edit');
+    Route::put('/admin/projects/{project}',[ProjectController::class,'update'])->name('projects.update');
+    Route::delete('/admin/projects/{project}',[ProjectController::class,'destroy'])->name('projects.destroy');
  });
 
 Route::get('/dashboard', function () {
