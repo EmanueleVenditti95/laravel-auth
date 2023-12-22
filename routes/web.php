@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
  Route::middleware(['auth','verified'])->group(function() {
-    Route::get('/',[ProjectController::class, 'index'])->name('projects.index');
+    Route::get('/admin/projects',[ProjectController::class, 'index'])->name('projects.index');
     Route::get('/admin/projects/create', [ProjectController::class, 'create'])->name('projects.create');
     Route::get('/admin/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
     Route::post('/admin/projects',[ProjectController::class, 'store'])->name('projects.store');

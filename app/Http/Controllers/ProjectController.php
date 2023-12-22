@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ProjectController extends Controller
 {
@@ -54,7 +56,20 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        //ricordarsi di definire $fillable nel Model
+        $request->validate([
+            'title' => ['required', 'max:255', 'string',Rule::unique('projects')->ignore($project->id)],
+            'image' => ['required', 'url'],
+            'description' => ['nullable']
+        ]);
+
+        $data = $request->all(); 
+
+        $data['slug'] = Str::slug($data['title'], '-');
+
+        $project->update($data);
+
+        return redirect()->route('projects.show',$project);
     }
 
     /**
