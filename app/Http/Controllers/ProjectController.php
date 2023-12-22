@@ -24,7 +24,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.projects.create');
     }
 
     /**
@@ -32,7 +32,15 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'max:255', 'string',Rule::unique('projects')],
+            'image' => ['required', 'url'],
+            'description' => ['nullable']
+        ]);
+        $data = $request->all();
+        $data['slug'] = Str::slug($data['title'], '-');
+        $project = Project::create($data);
+        return redirect()->route('projects.show',$project->id);
     }
 
     /**
